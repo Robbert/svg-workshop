@@ -99,6 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const heading = document.createElement('h2');
 		heading.textContent = technique.title;
 		section.appendChild(heading);
+		const para = document.createElement('p');
+		para.textContent = technique.desc;
+		section.appendChild(para);
 		const idRoots = Array.from(svg.querySelectorAll('[id]'));
 
 		const renderSprite = (sprite) => {
@@ -138,14 +141,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	const techniques = [
 		{
 			title: 'technique #1',
+			desc: 'Generate a <view id="xyz" viewBox="..."> element in the SVG, and refer to it '
+			    + 'using <img src=example.svg#xy`>. Because in this example I add the <view> '
+			    + 'element in an embedded <svg>, I needed to create a blob URL to be able to use '
+			    + 'the fragment identifier. Just <img src="#xyz"> did not work.',
 			converter: createSprite1
 		},
 		{
 			title: 'technique #2',
+			desc: 'This approach is similar to the <view> technique, but when the sprite elements '
+			    + 'in SVG already have id attributes, it does not require any modifications to the'
+			    + ' SVG file.',
 			converter: createSprite2
 		},
 		{
 			title: 'technique #3',
+			desc: 'This is a technique that is similar to viewBox fragment identifier URLs, '
+			    + 'but for browsers that do not support those URLs.',
 			converter: createSprite3
 		}
 	];

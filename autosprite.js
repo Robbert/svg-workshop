@@ -9,7 +9,6 @@ const xlinkAttr = (el, attrName, value) => el.setAttributeNS(XMLNS_XLINK, attrNa
 const parent = (el, selector) => {
 	let parent;
 	while ((parent = el.parentNode) && parent) {
-		console.log(parent);
 		if (parent.matches && parent.matches(selector)) {
 			return parent;
 		}
@@ -38,7 +37,12 @@ const createSprite1 = (el, id, bbox) => {
 
 	const img = new Image();
 
-	img.src = `${imgLocation}#${id}-view`;
+	const blob = new Blob([svg.outerHTML], { type: 'image/svg+xml' });
+	const blobURL = URL.createObjectURL(blob);
+
+	img.src = `${blobURL}#${id}-view`;
+	img.width = bbox.width;
+	img.height = bbox.height;
 
 	return img;
 };
@@ -54,7 +58,9 @@ const createSprite2 = (el, id, bbox) => {
 
 	const img = new Image();
 
-	img.src = `${imgLocation}#svgView(viewBox(${viewBox})`;
+	img.src = `${imgLocation}#svgView(viewBox(${viewBox}))`;
+	img.width = bbox.width;
+	img.height = bbox.height;
 
 	return img;
 

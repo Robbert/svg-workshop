@@ -43,7 +43,6 @@
 <h2>Example of generated sprites</h2>
 <div id="generated">
 </div>
-<script src="autosprite.js"></script>
 <style>
 section {
   border: 2px solid green;
@@ -173,6 +172,42 @@ const createSprite3 = (el, id, bbox) => {
 
 };
 
+const createSprite4 = (el, id, bbox) => {
+
+  const svg = parent(el, 'svg');
+
+  const symbol = svgElement('symbol');
+  const viewBox = [
+    bbox.x,
+    bbox.y,
+    bbox.width,
+    bbox.height
+  ].map(Math.round).join(' ');
+
+  symbol.setAttribute('id', `${id}-symbol`);
+  symbol.setAttribute('viewBox', viewBox);
+
+  const use = svgElement('use');
+  xlinkAttr(use, 'xlink:href', `#${id}`);
+  symbol.appendChild(use);
+
+  svg.appendChild(symbol);
+
+  // Now that the <svg> is updated with a <symbol> attribute
+
+  const sprite = svgElement('svg');
+  const spriteUse = svgElement('use');
+
+  sprite.appendChild(spriteUse);
+  xlinkAttr(spriteUse, 'xlink:href', `#${id}-symbol`);
+
+  // sprite.setAttribute('viewBox', [0, 0, bbox.width, bbox.height].map(Math.round).join(' '));
+  sprite.setAttribute('height', Math.round(bbox.height));
+  sprite.setAttribute('width', Math.round(bbox.width));
+
+  return sprite;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
 
   const createExample = (technique, svg) => {
@@ -242,6 +277,12 @@ document.addEventListener('DOMContentLoaded', () => {
       desc: 'This is a technique that is similar to viewBox fragment identifier URLs, '
           + 'but for browsers that do not support those URLs.',
       converter: createSprite3
+    },
+    {
+      title: 'technique #4',
+      desc: 'Define a sprite viewBox inside the <svg> like in technique #1, but with <symbol> '
+          + 'instead of <view>. Embed the image using <svg><use></svg> like in technique #3.',
+      converter: createSprite4
     }
   ];
 

@@ -72,7 +72,23 @@ const XMLNS_SVG = 'http://www.w3.org/2000/svg';
 const XMLNS_XLINK = 'http://www.w3.org/1999/xlink';
 
 const svgElement = (nodeName) => document.createElementNS(XMLNS_SVG, nodeName);
-const xlinkAttr = (el, attrName, value) => el.setAttributeNS(XMLNS_XLINK, attrName, value);
+
+const SUPPORT_SVG_HREF = 'href' in svgElement('use');
+
+const xlinkAttr = (el, attrName, value) => {
+
+  if (attrName == 'xlink:href' && SUPPORT_SVG_HREF) {
+
+    el.setAttribute('href', value);
+
+  }
+  else {
+
+    el.setAttributeNS(XMLNS_XLINK, attrName, value);
+
+  }
+
+};
 
 const parent = (el, selector) => {
   let parent;
@@ -134,14 +150,13 @@ const createSprite2 = (el, id, bbox) => {
 
 };
 
-
 const createSprite3 = (el, id, bbox) => {
 
   const sprite = svgElement('svg');
   const use = svgElement('use');
 
   sprite.appendChild(use);
-  xlinkAttr(use, 'href', `#${id}`);
+  xlinkAttr(use, 'xlink:href', `#${id}`);
 
   const viewBox = [
     bbox.x,

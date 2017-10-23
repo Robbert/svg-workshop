@@ -2,6 +2,8 @@
 <meta charset="utf-8">
 <h1>SVG workshop</h1>
 <h2>Source SVG</h2>
+<p>The plan is to generate SVG sprites automatically for SVG elements that have an <code>id</code> attribute. I'm going to use <code>svgEl.getBBox()</code> to get the coordinates of the sprite, and generate a <code>viewBox</code> for those coordinates.</p>
+
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="195.8" height="32" viewBox="0 0 195.8 32">
   <title>smiley-sprite</title>
   <g id="smiley--surprised">
@@ -47,5 +49,15 @@ section {
 	border: 2px solid green;
 	padding: 2em;
 	margin-top: 2em;
+}
+:root {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+pre {
+	font-family: 'Monaco', monospace;
+	font-size: 0.8em;
+}
+body {
+	padding: 2em 4em 8em 4em;
 }
 </style>

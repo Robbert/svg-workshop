@@ -1,21 +1,67 @@
+const imgLocation = 'sprites.svg';
+
 const XMLNS_SVG = 'http://www.w3.org/2000/svg';
 const XMLNS_XLINK = 'http://www.w3.org/1999/xlink';
 
 const svgElement = (nodeName) => document.createElementNS(XMLNS_SVG, nodeName);
 const xlinkAttr = (el, attrName, value) => el.setAttributeNS(XMLNS_XLINK, attrName, value);
 
+const parent = (el, selector) => {
+	let parent;
+	while ((parent = el.parentNode) && parent) {
+		console.log(parent);
+		if (parent.matches && parent.matches(selector)) {
+			return parent;
+		}
+	}
+	return null;
+}
+
 const hasBBoxFn = el => typeof el.getBBox === 'function';
 
-const createSprite1 = (el) => {
+const createSprite1 = (el, id, bbox) => {
+
+	const svg = parent(el, 'svg');
+
+	const view = svgElement('view');
+	const viewBox = [
+		bbox.x,
+		bbox.y,
+		bbox.width,
+		bbox.height
+	].map(Math.round).join(' ');
+
+	view.setAttribute('id', `${id}-view`);
+	view.setAttribute('viewBox', viewBox);
+
+	svg.appendChild(view);
+
+	const img = new Image();
+
+	img.src = `${imgLocation}#${id}-view`;
+
+	return img;
+};
+
+const createSprite2 = (el, id, bbox) => {
+
+	const viewBox = [
+		bbox.x,
+		bbox.y,
+		bbox.width,
+		bbox.height
+	].map(Math.round).join(', ');
+
+	const img = new Image();
+
+	img.src = `${imgLocation}#svgView(viewBox(${viewBox})`;
+
+	return img;
 
 };
 
-const createSprite2 = (el) => {
 
-};
-
-
-const createSprite3 = (id, bbox) => {
+const createSprite3 = (el, id, bbox) => {
 
 	const sprite = svgElement('svg');
 	const use = svgElement('use');
@@ -67,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			const bbox = el.getBBox();
 
-			return technique.converter(el.id, bbox);
+			return technique.converter(el, el.id, bbox);
 
 		};
 
